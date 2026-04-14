@@ -1,0 +1,24 @@
+[project]
+name = "pyworking"
+version = "0.1.0"
+description = ""
+license = {text = "Apache License"}
+authors = [
+    { name = "Michael R. Bernstein", email = "mrb1778@gmail.com" }
+]
+package-mode = false
+readme = "README.md"
+requires-python = ">=3.13"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+dependencies = [
+    "torch>=2.11.0",
+    "tqdm>=4.67.3",
+    "transformers>=5.5.0",
+    "xutils @ git+https://github.com/mrb1778/xutils.git"
+]
+
+
