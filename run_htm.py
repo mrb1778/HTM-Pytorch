@@ -70,7 +70,7 @@ if __name__ == '__main__':
     spatial_pooler = SpatialPooler(
         column_count=COLUMN_COUNT,
         output_size=SPATIAL_POOL_ACTIVE,
-        potential_pct=0.8,
+        potential_pct=0.2,
         permanence_inc=0.1,
         permanence_dec=0.1,
         device=device
