@@ -142,10 +142,10 @@ class SpatialPooler(nn.Module):
         self.active_duty_cycle = (1 - current_decay) * self.active_duty_cycle + current_decay * self.active_columns
 
         # Update boost coefficient over time
-        current_boost_coeff = 10.0 / (1 + self.iterations / 1000)
+        current_boost_coef = 10.0 / (1 + self.iterations / 1000)
         average_duty_cycle = self.active_duty_cycle.mean()
         torch.exp(
-            (average_duty_cycle - self.active_duty_cycle) * current_boost_coeff,
+            (average_duty_cycle - self.active_duty_cycle) * current_boost_coef,
             out=self.boost_factors
         )
         self.boost_factors.clamp_(1.0, 10.0)
