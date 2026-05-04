@@ -7,11 +7,13 @@ from .learning_decoder import LearningDecoder
 
 
 class LearningDecoderTrainer:
-    def __init__(self,
-                 model: LearningDecoder,
-                 device: str = "cpu",
-                 numeric_encoder: Callable[[Any], int] = None,
-                 numeric_decoder: Callable[[int], Any] = None):
+    def __init__(
+            self,
+            model: LearningDecoder,
+            numeric_encoder: Callable[[Any], int] = None,
+            numeric_decoder: Callable[[int], Any] = None,
+            device: torch.device | str | None = None
+    ) -> None:
         self.model = model
         self.criterion = nn.CrossEntropyLoss()
         self.optimizer = optim.Adam(model.parameters(), lr=0.001)

@@ -14,11 +14,13 @@ class IterableSparseEncoder(nn.Module):
     for each item. This is suitable for a small, categorical input space.
     """
 
-    def __init__(self,
-                 items: List[Any],
-                 output_size: int,
-                 sparsity: float = 0.02,
-                 device: str = "cpu"):
+    def __init__(
+            self,
+            items: List[Any],
+            output_size: int,
+            sparsity: float = 0.02,
+            device: torch.device | str | None = None
+    ) -> None:
         """
         Initializes the encoder with SDR parameters.
 

@@ -6,13 +6,15 @@ from .spatial_pooler import SpatialPooler
 
 
 class HtmNetwork(nn.Module):
-    def __init__(self,
-                 spatial_pooler: SpatialPooler,
-                 temporal_memory: nn.Module,
-                 encoder: nn.Module = None,
-                 decoder: nn.Module = None,
-                 decoder_trainer: LearningDecoderTrainer = None,
-                 device: str = "cpu"):
+    def __init__(
+            self,
+            spatial_pooler: SpatialPooler,
+            temporal_memory: nn.Module,
+            encoder: nn.Module = None,
+            decoder: nn.Module = None,
+            decoder_trainer: LearningDecoderTrainer = None,
+            device: torch.device | str | None = None
+    ) -> None:
         super(HtmNetwork, self).__init__()
         self.encoder = encoder
         self.decoder = decoder

@@ -28,13 +28,15 @@ class SpatialPooler(nn.Module):
     top_k_values: torch.Tensor
     top_k_indices: torch.Tensor
 
-    def __init__(self,
-                 column_count: int,
-                 potential_pct: float,
-                 output_size: int,
-                 permanence_inc: float,
-                 permanence_dec: float,
-                 device: str):
+    def __init__(
+            self,
+            column_count: int,
+            potential_pct: float,
+            output_size: int,
+            permanence_inc: float,
+            permanence_dec: float,
+            device: torch.device | str | None = None
+    ) -> None:
         super(SpatialPooler, self).__init__()
         self.column_count = column_count
         self.potential_pool_size = int(column_count * potential_pct)

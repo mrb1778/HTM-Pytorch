@@ -34,24 +34,25 @@ class TemporalMemory(nn.Module):
     over_threshold_segments: torch.Tensor
     under_threshold_segments_all: torch.Tensor
     under_threshold_segments: torch.Tensor
-    previous_active_locations_temp: torch.Tensor
     previous_active_locations: torch.Tensor
     active_synapses: torch.Tensor
     predicted_locations: torch.Tensor
     segment_post_max: torch.Tensor
 
-    def __init__(self: 'TemporalMemory',
-                 num_columns: int = 1024,
-                 cells_per_column: int = 32,
-                 input_size: int = 32,
-                 segment_size: int = 32,
-                 segment_threshold: int = 16,
-                 permanence_threshold: float = 0.5,
-                 permanence_inc: float = 0.1,
-                 permanence_dec: float = 0.01,
-                 max_segments: int = 5000,
-                 initial_permanence: float = 0.21,
-                 device: str = None):
+    def __init__(
+            self: 'TemporalMemory',
+            num_columns: int = 1024,
+            cells_per_column: int = 32,
+            input_size: int = 32,
+            segment_size: int = 32,
+            segment_threshold: int = 16,
+            permanence_threshold: float = 0.5,
+            permanence_inc: float = 0.1,
+            permanence_dec: float = 0.01,
+            max_segments: int = 5000,
+            initial_permanence: float = 0.21,
+            device: torch.device | str | None = None
+    ) -> None:
         super().__init__()
         self.debug = False
         self.num_columns = num_columns
@@ -146,15 +147,12 @@ class TemporalMemory(nn.Module):
         self.register_buffer('under_threshold_segments', None)
         self.set_segment_shortcuts()
 
-        self.register_buffer('previous_active_locations_temp',
+        self.register_buffer('previous_active_locations',
                              torch.zeros(
-                                 (self.input_size, 1),
+                                 (self.input_size,),
                                  dtype=torch.long,
                                  device=self.device,
                              ),
-                             persistent=False)
-        self.register_buffer('previous_active_locations',
-                             None,
                              persistent=False)
 
         self.register_buffer('active_synapses',
@@ -185,7 +183,7 @@ class TemporalMemory(nn.Module):
     def reset(self):
         self.columns.zero_()
         self.segment_post_max.zero_()
-        self.previous_active_locations_temp.zero_()
+        self.previous_active_locations.zero_()
         self.active_synapses = None
         self.predicted_locations = None
         self.over_threshold_segments.zero_()
@@ -194,8 +192,8 @@ class TemporalMemory(nn.Module):
     def forward(self, active_columns: torch.Tensor, learn: bool = True) -> Tensor:
         self.iteration += 1
         self.learn = learn
-        self.previous_active_locations = pyu.nonzero_flatten(self.pred_and_burst_winners,
-                                                             out=self.previous_active_locations_temp)
+        pyu.nonzero_flatten(self.pred_and_burst_winners,
+                            out=self.previous_active_locations)
 
         self._activate_predicted_cells(active_columns)
         self._activate_bursting_cells()
