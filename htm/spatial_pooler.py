@@ -29,7 +29,7 @@ class SpatialPooler(nn.Module):
     top_k_indices: torch.Tensor
 
     def __init__(
-            self,
+            self: 'SpatialPooler',
             column_count: int,
             potential_pct: float,
             output_size: int,
@@ -54,7 +54,6 @@ class SpatialPooler(nn.Module):
         self.register_buffer('active_duty_cycle', torch.zeros(column_count, device=device))
 
         self.iterations = 0
-        self.learn = True
 
         # Connect columns to random inputs
         for c in range(column_count):
@@ -90,7 +89,7 @@ class SpatialPooler(nn.Module):
         self._forward_to_topk(x)
         self._forward_to_active()
 
-        if self.learn:
+        if self.learning:
             self.iterations += 1
             self._learn(x)
 

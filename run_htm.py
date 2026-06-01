@@ -106,7 +106,7 @@ if __name__ == '__main__':
         print("\n--- Priming Spatial Pooler ", "-" * 40)
         sp_output: list[torch.Tensor] = []
         sp_stability: list[float] = []
-        spatial_pooler.learn = True
+        spatial_pooler.train()
         for epoch in (pbar := tqdm(range(50), desc="Priming Spatial Pooler")):
             for i, sequence_item in enumerate(train_data_unique_items):
                 pbar.set_postfix({"processing char": sequence_item})
@@ -120,7 +120,7 @@ if __name__ == '__main__':
                     sp_stability.append(0)
 
                 pbar.set_postfix({"Stability": sum(sp_stability) / len(sp_stability)})
-        spatial_pooler.learn = False
+        spatial_pooler.eval()
         print(f"SP Stability: {sum(sp_stability) / len(sp_stability)}")
         pyu.save_state_dict(spatial_pooler, f"{checkpoint_directory}spatial_pooler.pth")
     else:
@@ -139,8 +139,8 @@ if __name__ == '__main__':
     htm_model.reset()
     num_right = 0
     wrong = {}
-    temporal_memory.learn = False
-    decoder_trainer.learn = False
+    temporal_memory.eval()
+    decoder_trainer.eval()
     for train_item in (pbar := tqdm(train_data, desc="Inference")):
         pbar.set_postfix({"Sequence": train_item})
         htm_model.reset()

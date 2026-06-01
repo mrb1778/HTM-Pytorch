@@ -2,7 +2,9 @@ from transformers import AutoTokenizer
 
 
 class Tokenizer:
-    def __init__(self, path: str, max_tokens: int = 1024):
+    def __init__(self: 'Tokenizer',
+                 path: str,
+                 max_tokens: int = 1024):
         super().__init__()
         # noinspection PyNoneFunctionAssignment
         self.tokenizer = AutoTokenizer.from_pretrained(path, local_files_only=True)

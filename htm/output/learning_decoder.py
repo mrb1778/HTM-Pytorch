@@ -4,7 +4,7 @@ from torch import nn as nn
 
 class LearningDecoder(nn.Module):
     def __init__(
-            self,
+            self: 'LearningDecoder',
             num_cells: int,
             num_inputs: int,
             device: torch.device | str | None = None

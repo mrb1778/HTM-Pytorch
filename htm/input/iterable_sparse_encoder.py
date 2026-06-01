@@ -15,7 +15,7 @@ class IterableSparseEncoder(nn.Module):
     """
 
     def __init__(
-            self,
+            self: 'IterableSparseEncoder',
             items: List[Any],
             output_size: int,
             sparsity: float = 0.02,

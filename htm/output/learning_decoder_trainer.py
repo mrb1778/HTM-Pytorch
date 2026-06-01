@@ -6,24 +6,23 @@ from torch import nn as nn, optim
 from .learning_decoder import LearningDecoder
 
 
-class LearningDecoderTrainer:
-    def __init__(
-            self,
-            model: LearningDecoder,
-            numeric_encoder: Callable[[Any], int] = None,
-            numeric_decoder: Callable[[int], Any] = None,
-            device: torch.device | str | None = None
-    ) -> None:
+class LearningDecoderTrainer(nn.Module):
+    def __init__(self: 'LearningDecoderTrainer',
+                 model: LearningDecoder,
+                 numeric_encoder: Callable[[Any], int] = None,
+                 numeric_decoder: Callable[[int], Any] = None,
+                 device: torch.device | str | None = None
+                 ) -> None:
+        super().__init__()
         self.model = model
         self.criterion = nn.CrossEntropyLoss()
         self.optimizer = optim.Adam(model.parameters(), lr=0.001)
         self.device = device
         self.numeric_encoder = numeric_encoder
         self.numeric_decoder = numeric_decoder
-        self.learn = True
 
-    def train(self, inputs, value, numeric_value=None) -> tuple[torch.Tensor | None, bool | None]:
-        if self.learn:
+    def train_decoder(self, inputs, value, numeric_value=None) -> tuple[torch.Tensor | None, bool | None]:
+        if self.learning:
             self.model.train()
             self.optimizer.zero_grad()
 
@@ -43,7 +42,7 @@ class LearningDecoderTrainer:
         else:
             return None, None
 
-    def decode(self, x: torch.Tensor) -> Any:
+    def forward(self, x: torch.Tensor) -> Any:
         self.model.eval()
         with torch.no_grad():
             x = x.reshape([1, -1])

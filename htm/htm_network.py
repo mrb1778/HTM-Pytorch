@@ -7,7 +7,7 @@ from .spatial_pooler import SpatialPooler
 
 class HtmNetwork(nn.Module):
     def __init__(
-            self,
+            self: 'HtmNetwork',
             spatial_pooler: SpatialPooler,
             temporal_memory: nn.Module,
             encoder: nn.Module = None,

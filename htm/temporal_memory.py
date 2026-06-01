@@ -72,8 +72,6 @@ class TemporalMemory(nn.Module):
         self.max_segments = max_segments
         self.initial_permanence = initial_permanence
 
-        self.learn = True
-
         num_layers = 7
         self.register_buffer('columns', torch.zeros(
             size=(
@@ -189,16 +187,15 @@ class TemporalMemory(nn.Module):
         self.over_threshold_segments.zero_()
         self.under_threshold_segments.zero_()
 
-    def forward(self, active_columns: torch.Tensor, learn: bool = True) -> Tensor:
+    def forward(self, active_columns: torch.Tensor) -> Tensor:
         self.iteration += 1
-        self.learn = learn
         pyu.nonzero_flatten(self.pred_and_burst_winners,
                             out=self.previous_active_locations)
 
         self._activate_predicted_cells(active_columns)
         self._activate_bursting_cells()
 
-        if self.learn:
+        if self.learning:
             self._learn()
 
         if self.iteration > 1:
