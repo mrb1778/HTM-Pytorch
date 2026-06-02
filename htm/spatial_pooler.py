@@ -89,7 +89,7 @@ class SpatialPooler(nn.Module):
         self._forward_to_topk(x)
         self._forward_to_active()
 
-        if self.learning:
+        if self.training:
             self.iterations += 1
             self._learn(x)
 

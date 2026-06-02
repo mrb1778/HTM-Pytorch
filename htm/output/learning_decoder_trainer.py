@@ -22,7 +22,7 @@ class LearningDecoderTrainer(nn.Module):
         self.numeric_decoder = numeric_decoder
 
     def train_decoder(self, inputs, value, numeric_value=None) -> tuple[torch.Tensor | None, bool | None]:
-        if self.learning:
+        if self.training:
             self.model.train()
             self.optimizer.zero_grad()
 

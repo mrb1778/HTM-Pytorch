@@ -195,7 +195,7 @@ class TemporalMemory(nn.Module):
         self._activate_predicted_cells(active_columns)
         self._activate_bursting_cells()
 
-        if self.learning:
+        if self.training:
             self._learn()
 
         if self.iteration > 1:
